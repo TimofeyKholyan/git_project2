@@ -22,14 +22,18 @@ class Board:
         for i in range(self.height):
             if bool(i) and i % 3 == 0:
                 self.top += 1
-                pygame.draw.line(screen, (0, 0, 0), (self.left, self.top + i * self.cell_size), (self.left + self.height * self.cell_size, self.top + i * self.cell_size), 3)
+                pygame.draw.line(screen, (0, 0, 0), (self.left, self.top + i * self.cell_size), (self.left + self.width * self.cell_size, self.top + i * self.cell_size), 3)
             for j in range(self.width):
                 if bool(j) and j % 3 == 0:
                     self.left += 1
-                    pygame.draw.line(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top), (self.left + j * self.cell_size, self.top + self.width * self.cell_size), 3)
+                    pygame.draw.line(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top), (self.left + j * self.cell_size, self.top + self.height * self.cell_size), 3)
                 pygame.draw.rect(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), 1)
             self.left -= 2
         self.top -= 2
+        pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left + self.width * self.cell_size, self.top), 3)
+        pygame.draw.line(screen, (0, 0, 0), (self.left, self.top + self.height * self.cell_size), (self.left + self.width * self.cell_size, self.top + self.height * self.cell_size), 3)
+        pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left, self.top + self.height * self.cell_size), 3)
+        pygame.draw.line(screen, (0, 0, 0), (self.left + self.width * self.cell_size, self.top), (self.left + self.width * self.cell_size, self.top + self.height * self.cell_size), 3)
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
@@ -52,12 +56,16 @@ board = Board(9, 9)
 clock = pygame.time.Clock()
 fps = 5
 running = True
+chosen = False
 screen.fill((255, 255, 255))
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type =
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            board.get_click(event.pos)
+        if event.type == pygame.K_1 and chosen:
+            pass
     screen.fill((255, 255, 255))
     board.render()
     clock.tick(fps)
