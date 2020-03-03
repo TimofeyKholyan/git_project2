@@ -8,10 +8,12 @@ class Board:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.board = [[0] * width for i in range(height)]
+        self.board = [[10] * width for i in range(height)]
         self.left = 130
         self.top = 130
         self.cell_size = 60
+        self.x = 10
+        self.y = 10
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -27,7 +29,7 @@ class Board:
                 if bool(j) and j % 3 == 0:
                     self.left += 1
                     pygame.draw.line(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top), (self.left + j * self.cell_size, self.top + self.height * self.cell_size), 3)
-                pygame.draw.rect(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), 1)
+                pygame.draw.rect(screen, {True: (0, 0, 0), False: (255, 0, 0)}[self.board[i][j] >= 0], (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), {True: 1, False: 3}[self.board[i][j] >= 0])
             self.left -= 2
         self.top -= 2
         pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left + self.width * self.cell_size, self.top), 3)
@@ -50,7 +52,11 @@ class Board:
 
     def on_click(self, cell_coords):
         x, y = cell_coords
-        self.board[y][x] = 1
+        if abs(self.x) != 10 or abs(self.y) != 10:
+            self.board[self.y][self.x] *= -1
+        self.board[y][x] *= -1
+        self.x, self.y = cell_coords
+
 
 board = Board(9, 9)
 clock = pygame.time.Clock()
@@ -65,7 +71,7 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             board.get_click(event.pos)
         if event.type == pygame.K_1 and chosen:
-            pass
+            board.board[board.y][board.x] = 1
     screen.fill((255, 255, 255))
     board.render()
     clock.tick(fps)
