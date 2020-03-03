@@ -12,8 +12,8 @@ class Board:
         self.left = 130
         self.top = 130
         self.cell_size = 60
-        self.x = 10
-        self.y = 10
+        self.x = width
+        self.y = height
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -30,6 +30,42 @@ class Board:
                     self.left += 1
                     pygame.draw.line(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top), (self.left + j * self.cell_size, self.top + self.height * self.cell_size), 3)
                 pygame.draw.rect(screen, {True: (0, 0, 0), False: (255, 0, 0)}[self.board[i][j] >= 0], (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), {True: 1, False: 3}[self.board[i][j] >= 0])
+                if abs(self.board[i][j]) == 1:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('1', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 2:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('2', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 3:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('3', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 4:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('4', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 5:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('5', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 6:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('6', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 7:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('7', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 8:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('8', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
+                if abs(self.board[i][j]) == 9:
+                    font = pygame.font.Font(None, 50)
+                    number = font.render('9', 1, (100, 100, 255))
+                    screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
             self.left -= 2
         self.top -= 2
         pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left + self.width * self.cell_size, self.top), 3)
@@ -45,14 +81,14 @@ class Board:
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
         i, j = (x - self.left) // self.cell_size, (y - self.top) // self.cell_size
-        if i >= self.width or j >= self.height or i < 0 or i < 0:
+        if i >= self.width or j >= self.height or i < 0 or j < 0:
             return None
         else:
             return i, j
 
     def on_click(self, cell_coords):
         x, y = cell_coords
-        if abs(self.x) != 10 or abs(self.y) != 10:
+        if abs(self.x) != self.width and abs(self.y) != self.height:
             self.board[self.y][self.x] *= -1
         self.board[y][x] *= -1
         self.x, self.y = cell_coords
@@ -62,16 +98,32 @@ board = Board(9, 9)
 clock = pygame.time.Clock()
 fps = 5
 running = True
-chosen = False
 screen.fill((255, 255, 255))
 while running:
+    chosen = abs(board.x) != board.width and abs(board.y) != board.height
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             board.get_click(event.pos)
-        if event.type == pygame.K_1 and chosen:
-            board.board[board.y][board.x] = 1
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1 and chosen:
+            board.board[board.y][board.x] = -1
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_2 and chosen:
+            board.board[board.y][board.x] = -2
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_3 and chosen:
+            board.board[board.y][board.x] = -3
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_4 and chosen:
+            board.board[board.y][board.x] = -4
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_5 and chosen:
+            board.board[board.y][board.x] = -5
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_6 and chosen:
+            board.board[board.y][board.x] = -6
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_7 and chosen:
+            board.board[board.y][board.x] = -7
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_8 and chosen:
+            board.board[board.y][board.x] = -8
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_9 and chosen:
+            board.board[board.y][board.x] = -9
     screen.fill((255, 255, 255))
     board.render()
     clock.tick(fps)
