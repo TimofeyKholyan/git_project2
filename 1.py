@@ -96,7 +96,8 @@ class Board:
 
 board = Board(9, 9)
 clock = pygame.time.Clock()
-fps = 5
+fps = 60
+need = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 running = True
 screen.fill((255, 255, 255))
 while running:
@@ -124,6 +125,19 @@ while running:
             board.board[board.y][board.x] = -8
         if event.type == pygame.KEYDOWN and event.key == pygame.K_9 and chosen:
             board.board[board.y][board.x] = -9
+    if abs(board.y) != 9 and abs(board.x) != 9:
+        board.board[board.y][board.x] *= -1
+    for i in range(min(board.width, board.height)):
+        if set(board.board[i]) != need:
+            break
+        if set([j[i] for j in board.board]) != need:
+            break
+        if set(board.board[i // 3 * 3][i % 3 * 3: i % 3 * 3 + 3] + board.board[i // 3 * 3 + 1][i % 3 * 3: i % 3 * 3 + 3] + board.board[i // 3 * 3 + 2][i % 3 * 3: i % 3 * 3 + 3]) != need:
+            break
+    else:
+        board.board = [[0] * board.width for i in range(board.height)]
+    if abs(board.y) != 9 and abs(board.x) != 9:
+        board.board[board.y][board.x] *= -1
     screen.fill((255, 255, 255))
     board.render()
     clock.tick(fps)
