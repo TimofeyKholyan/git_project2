@@ -1,12 +1,45 @@
 import pygame
 import os
+import sys
 from random import randrange as rr
 
 pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
 
-class Board:
+def main_screen():  # Заставка
+    rules = ['Судоку', 'Расставьте цифры так, чтобы во всех строках,', 'столбцах и квадратах было каждой по одной',
+             'Пройдите пять уровней', 'Нажмите чтобы начать']
+    font = pygame.font.Font(None, 50)
+    line_coord = 50
+    for line in rules:
+        l = font.render(line, 1, (100, 100, 255))
+        screen.blit(l, (0, line_coord))
+        line_coord += 60
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                return
+
+
+def goodbye():  # Конец
+    screen.fill((255, 255, 255))
+    font = pygame.font.Font(None, 50)
+    string = font.render('Молодец!', 1, (100, 100, 255))
+    screen.blit(string, (200, 250))
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+
+class Board:  # Поле
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -25,7 +58,7 @@ class Board:
         self.top = top
         self.cell_size = cell_size
 
-    def load_levels(self):
+    def load_levels(self):  # Загрузка уровней из соответствующей папки
         levels = []
         for currentdir, dirs, files in os.walk('data'):
             for file in files:
@@ -39,13 +72,13 @@ class Board:
                 levels.append(level_board)
         return levels
 
-    def freeze(self):
+    def freeze(self):  # Нужно обеспечить неизменность изначальных клеток
         for i in range(self.height):
             for j in range(self.width):
                 if self.board[i][j] != 10:
                     self.frozen.append((j, i))
 
-    def render(self):
+    def render(self):  # Отрисовка поля
         for i in range(self.height):
             if bool(i) and i % 3 == 0:
                 self.top += 1
@@ -98,10 +131,10 @@ class Board:
         pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left, self.top + self.height * self.cell_size), 3)
         pygame.draw.line(screen, (0, 0, 0), (self.left + self.width * self.cell_size, self.top), (self.left + self.width * self.cell_size, self.top + self.height * self.cell_size), 3)
 
-    def print_level(self, level_number):
+    def print_level(self, level_number):  # Номер уровня
         font = pygame.font.Font(None, 50)
         string = font.render('Уровень ' + str(level_number), 1, self.number_color)
-        screen.blit(string, (100, 50, 50, 50))
+        screen.blit(string, (100, 50))
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
@@ -116,7 +149,7 @@ class Board:
         else:
             return i, j
 
-    def on_click(self, cell_coords):
+    def on_click(self, cell_coords):  # Вспомогательные функции
         x, y = cell_coords
         if abs(self.x) != self.width and abs(self.y) != self.height:
             self.board[self.y][self.x] *= -1
@@ -124,19 +157,20 @@ class Board:
         self.x, self.y = cell_coords
 
 
-board = Board(9, 9)
+board = Board(9, 9)  # Наше поле
 clock = pygame.time.Clock()
 fps = 60
 need = {1, 2, 3, 4, 5, 6, 7, 8, 9}
-levels = board.load_levels()
+levels = board.load_levels()  # Список уровней
 level_index = 0
 board.board = levels[level_index]
 board.freeze()
-running = True
+running = True  # Константы и нужные данные
 screen.fill((255, 255, 255))
-while running:
+main_screen()
+while running:  # Игровой цикл
     chosen = abs(board.x) != board.width and abs(board.y) != board.height
-    for event in pygame.event.get():
+    for event in pygame.event.get():  # Обработка событий
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN and board.get_cell(event.pos) not in board.frozen:
@@ -163,7 +197,7 @@ while running:
             board.board[board.y][board.x] = -10
     if abs(board.y) != 9 and abs(board.x) != 9:
         board.board[board.y][board.x] *= -1
-    for i in range(min(board.width, board.height)):
+    for i in range(min(board.width, board.height)):  # Проверка и обновление уровней
         if set(board.board[i]) != need:
             break
         if set([j[i] for j in board.board]) != need:
@@ -179,15 +213,13 @@ while running:
             board.frame_color = (rr(0, 255), rr(0, 255), rr(0, 255))
             board.number_color = (rr(0, 255), rr(0, 255), rr(0, 255))
         else:
-            board.x = board.width
-            board.y = board.height
-            board.board = [[10] * width for i in range(height)]
+            goodbye()
     if abs(board.y) != 9 and abs(board.x) != 9:
         board.board[board.y][board.x] *= -1
     screen.fill((255, 255, 255))
     board.render()
     board.print_level(level_index + 1)
     clock.tick(fps)
-    pygame.display.flip()
+    pygame.display.flip()  # Вывод на экран
 
-pygame.quit()
+pygame.quit()  # Выход
