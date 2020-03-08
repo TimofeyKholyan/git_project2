@@ -98,6 +98,11 @@ class Board:
         pygame.draw.line(screen, (0, 0, 0), (self.left, self.top), (self.left, self.top + self.height * self.cell_size), 3)
         pygame.draw.line(screen, (0, 0, 0), (self.left + self.width * self.cell_size, self.top), (self.left + self.width * self.cell_size, self.top + self.height * self.cell_size), 3)
 
+    def print_level(self, level_number):
+        font = pygame.font.Font(None, 50)
+        string = font.render('Уровень ' + str(level_number), 1, self.number_color)
+        screen.blit(string, (100, 50, 50, 50))
+
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
         if cell is not None:
@@ -181,6 +186,7 @@ while running:
         board.board[board.y][board.x] *= -1
     screen.fill((255, 255, 255))
     board.render()
+    board.print_level(level_index + 1)
     clock.tick(fps)
     pygame.display.flip()
 
