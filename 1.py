@@ -1,4 +1,6 @@
 import pygame
+import os
+from random import randrange as rr
 
 pygame.init()
 size = width, height = 800, 800
@@ -14,11 +16,27 @@ class Board:
         self.cell_size = 60
         self.x = width
         self.y = height
+        self.frame_color = (255, 0, 0)
+        self.number_color = (100, 100, 255)
 
     def set_view(self, left, top, cell_size):
         self.left = left
         self.top = top
         self.cell_size = cell_size
+
+    def load_levels(self):
+        levels = []
+        for currentdir, dirs, files in os.walk('data'):
+            for file in files:
+                f = open('data/' + str(file))
+                level_board = [list(map(int, line.strip().split())) for line in f]
+                for i in range(self.height - len(level_board)):
+                    level_board.append([10] * self.width)
+                for i in level_board:
+                    if len(i) < self.width:
+                        i += [10] * (self.width - len(i))
+                levels.append(level_board)
+        return levels
 
     def render(self):
         for i in range(self.height):
@@ -29,42 +47,42 @@ class Board:
                 if bool(j) and j % 3 == 0:
                     self.left += 1
                     pygame.draw.line(screen, (0, 0, 0), (self.left + j * self.cell_size, self.top), (self.left + j * self.cell_size, self.top + self.height * self.cell_size), 3)
-                pygame.draw.rect(screen, {True: (0, 0, 0), False: (255, 0, 0)}[self.board[i][j] >= 0], (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), {True: 1, False: 3}[self.board[i][j] >= 0])
+                pygame.draw.rect(screen, {True: (0, 0, 0), False: self.frame_color}[self.board[i][j] >= 0], (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), {True: 1, False: 3}[self.board[i][j] >= 0])
                 if abs(self.board[i][j]) == 1:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('1', 1, (100, 100, 255))
+                    number = font.render('1', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 2:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('2', 1, (100, 100, 255))
+                    number = font.render('2', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 3:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('3', 1, (100, 100, 255))
+                    number = font.render('3', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 4:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('4', 1, (100, 100, 255))
+                    number = font.render('4', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 5:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('5', 1, (100, 100, 255))
+                    number = font.render('5', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 6:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('6', 1, (100, 100, 255))
+                    number = font.render('6', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 7:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('7', 1, (100, 100, 255))
+                    number = font.render('7', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 8:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('8', 1, (100, 100, 255))
+                    number = font.render('8', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 9:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('9', 1, (100, 100, 255))
+                    number = font.render('9', 1, self.number_color)
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
             self.left -= 2
         self.top -= 2
@@ -98,6 +116,9 @@ board = Board(9, 9)
 clock = pygame.time.Clock()
 fps = 60
 need = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+levels = board.load_levels()
+level_index = 0
+board.board = levels[level_index]
 running = True
 screen.fill((255, 255, 255))
 while running:
@@ -125,6 +146,8 @@ while running:
             board.board[board.y][board.x] = -8
         if event.type == pygame.KEYDOWN and event.key == pygame.K_9 and chosen:
             board.board[board.y][board.x] = -9
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_0 and chosen:
+            board.board[board.y][board.x] = -10
     if abs(board.y) != 9 and abs(board.x) != 9:
         board.board[board.y][board.x] *= -1
     for i in range(min(board.width, board.height)):
@@ -135,7 +158,17 @@ while running:
         if set(board.board[i // 3 * 3][i % 3 * 3: i % 3 * 3 + 3] + board.board[i // 3 * 3 + 1][i % 3 * 3: i % 3 * 3 + 3] + board.board[i // 3 * 3 + 2][i % 3 * 3: i % 3 * 3 + 3]) != need:
             break
     else:
-        board.board = [[0] * board.width for i in range(board.height)]
+        if level_index < len(levels) - 1:
+            board.x = board.width
+            board.y = board.height
+            level_index += 1
+            board.board = levels[level_index]
+            board.frame_color = (rr(0, 255), rr(0, 255), rr(0, 255))
+            board.number_color = (rr(0, 255), rr(0, 255), rr(0, 255))
+        else:
+            board.x = board.width
+            board.y = board.height
+            board.board = [[10] * width for i in range(height)]
     if abs(board.y) != 9 and abs(board.x) != 9:
         board.board[board.y][board.x] *= -1
     screen.fill((255, 255, 255))
