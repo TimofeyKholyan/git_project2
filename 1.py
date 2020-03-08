@@ -18,6 +18,7 @@ class Board:
         self.y = height
         self.frame_color = (255, 0, 0)
         self.number_color = (100, 100, 255)
+        self.frozen = []
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -37,6 +38,12 @@ class Board:
                         i += [10] * (self.width - len(i))
                 levels.append(level_board)
         return levels
+
+    def freeze(self):
+        for i in range(self.height):
+            for j in range(self.width):
+                if self.board[i][j] != 10:
+                    self.frozen.append((j, i))
 
     def render(self):
         for i in range(self.height):
@@ -119,6 +126,7 @@ need = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 levels = board.load_levels()
 level_index = 0
 board.board = levels[level_index]
+board.freeze()
 running = True
 screen.fill((255, 255, 255))
 while running:
@@ -126,7 +134,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and board.get_cell(event.pos) not in board.frozen:
             board.get_click(event.pos)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_1 and chosen:
             board.board[board.y][board.x] = -1
