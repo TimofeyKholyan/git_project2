@@ -90,39 +90,39 @@ class Board:  # Поле
                 pygame.draw.rect(screen, {True: (0, 0, 0), False: self.frame_color}[self.board[i][j] >= 0], (self.left + j * self.cell_size, self.top + i * self.cell_size, self.cell_size, self.cell_size), {True: 1, False: 3}[self.board[i][j] >= 0])
                 if abs(self.board[i][j]) == 1:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('1', 1, self.number_color)
+                    number = font.render('1', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 2:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('2', 1, self.number_color)
+                    number = font.render('2', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 3:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('3', 1, self.number_color)
+                    number = font.render('3', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 4:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('4', 1, self.number_color)
+                    number = font.render('4', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 5:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('5', 1, self.number_color)
+                    number = font.render('5', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 6:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('6', 1, self.number_color)
+                    number = font.render('6', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 7:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('7', 1, self.number_color)
+                    number = font.render('7', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 8:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('8', 1, self.number_color)
+                    number = font.render('8', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
                 if abs(self.board[i][j]) == 9:
                     font = pygame.font.Font(None, 50)
-                    number = font.render('9', 1, self.number_color)
+                    number = font.render('9', 1, {True: (0, 0, 0), False: self.number_color}[(j, i) in self.frozen])
                     screen.blit(number, (self.left + j * self.cell_size + (self.cell_size - number.get_width()) // 2, self.top + i * self.cell_size +  + (self.cell_size - number.get_height()) // 2))
             self.left -= 2
         self.top -= 2
